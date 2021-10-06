@@ -1,2 +1,0 @@
-petstore/Pet.java
- petstore.Pet
