@@ -23,9 +23,9 @@ public class Pet {
                 .contentType("application/json")
                 .log().all()
                 .body(jsonBody)
-        .when()
+                .when()
                 .post(uri)
-        .then()
+                .then()
                 .log().all()
                 .statusCode(200);
     }
