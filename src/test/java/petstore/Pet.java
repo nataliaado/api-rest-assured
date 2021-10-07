@@ -17,7 +17,7 @@ public class Pet {
         return new String(Files.readAllBytes(Paths.get(caminhoJson)));
     }
 
-    @Test
+    @Test(priority = 1)
     public void createPet() throws IOException {
         String jsonBody = readJson("C:/PetStore/src/test/resources/data/pet1.json");
 
@@ -25,14 +25,30 @@ public class Pet {
                 .contentType("application/json")
                 .log().all()
                 .body(jsonBody)
-        .when()
+                .when()
                 .post(uri)
-        .then()
+                .then()
                 .log().all()
                 .statusCode(200)
                 .body("name", is("Atenas"))
                 .body("status", is("available"))
                 .body("category.name", is("dog"))
                 .body("tags.name", contains("sta"));
+    }
+
+    @Test(priority = 2)
+    public void checkPet() {
+        String petId = "4758239";
+
+        given()
+                .contentType("application/json")
+                .log().all()
+                .when()
+                .get(uri + "/" + petId)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("name", is("Atenas"))
+                .body("category.name", is("dog"));
     }
 }
