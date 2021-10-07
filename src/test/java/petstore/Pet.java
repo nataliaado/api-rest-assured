@@ -32,15 +32,15 @@ public class Pet {
                 .statusCode(200)
                 .body("name", is("Atenas"))
                 .body("status", is("available"))
-                .body("category.name", is("dog"))
-                .body("tags.name", contains("sta"));
+                .body("category.name", is("AT49FJE0L"))
+                .body("tags.name", contains("data"));
     }
 
     @Test(priority = 2)
-    public void checkPet() {
+    public void getPet() {
         String petId = "4758239";
 
-        given()
+        String token = given()
                 .contentType("application/json")
                 .log().all()
                 .when()
@@ -49,6 +49,28 @@ public class Pet {
                 .log().all()
                 .statusCode(200)
                 .body("name", is("Atenas"))
-                .body("category.name", is("dog"));
+                .body("category.name", is("AT49FJE0L"))
+                .extract()
+                .path("category.name");
+
+        System.out.println("O token é " + token);
+
+    }
+
+    @Test(priority = 3)
+    public void setPet() throws IOException {
+        String jsonBody = readJson("C:/PetStore/src/test/resources/data/pet2.json");
+
+        given()
+                .contentType("application/json")
+                .log().all()
+                .body(jsonBody)
+                .when()
+                .put(uri)
+                .then()
+                .log().all()
+                .statusCode(200)
+                .body("name", is("Atenas"))
+                .body("status", is("sold"));
     }
 }
